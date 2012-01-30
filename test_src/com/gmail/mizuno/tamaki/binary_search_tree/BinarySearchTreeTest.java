@@ -66,6 +66,8 @@ public class BinarySearchTreeTest {
 	
 	@Test
 	public void iteratorTest() {
+		tree.add(10, "10");
+		
 		Iterator<Integer> it = tree.iterator();
 
 		assertThat(it.hasNext(), is(true));
@@ -79,6 +81,8 @@ public class BinarySearchTreeTest {
 		assertThat(it.hasNext(), is(true));
 		assertThat(it.next(), is(9));
 		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(10));
+		assertThat(it.hasNext(), is(true));
 		assertThat(it.next(), is(13));
 		assertThat(it.hasNext(), is(true));
 		assertThat(it.next(), is(13));
@@ -89,5 +93,16 @@ public class BinarySearchTreeTest {
 		assertThat(it.hasNext(), is(true));
 		assertThat(it.next(), is(20));
 		assertThat(it.hasNext(), is(false));
+	}
+	
+	@Test
+	public void deleteTest2() {
+		assertThat(tree.toString(), is("<<2>4<<6_2>7<<9<10>>13<13_2>>>>15<18<20>>"));
+		assertThat(tree.delete(7), is("7"));
+		assertThat(tree.toString(), is("<<2>4<6_2<<9<10>>13<13_2>>>>15<18<20>>"));
+		assertThat(tree.delete(6), is("6_2"));
+		assertThat(tree.toString(), is("<<2>4<<9<10>>13<13_2>>>15<18<20>>"));
+		assertThat(tree.delete(10), is("10"));
+		assertThat(tree.toString(), is("<<2>4<<9>13<13_2>>>15<18<20>>"));
 	}
 }

@@ -1,35 +1,22 @@
 package com.gmail.mizuno.tamaki.binary_search_tree;
 
 import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.Iterator;
-import java.util.Queue;
 
 public class BinarySearchTree<K extends Comparable<K>, V> implements Iterable<K>{
 	public class BSTreeIterator implements Iterator<K> {
 		
-		private Queue<Node<K, V>> queue = new ArrayDeque<Node<K, V>>();
+		private Deque<Node<K, V>> stack = new ArrayDeque<Node<K, V>>();
 		private Node<K, V> next;
 		
 		public BSTreeIterator() {
-			pushToQueue(root);
-		}
-
-		private void pushToQueue(Node<K, V> root) {
-			Node<K, V> tmp = root;
-			
-			while (true) {
-				queue.add(tmp);
-				if (tmp.lChild == null) {
-					return;
-				} else {
-					tmp = tmp.lChild;
-				}
-			}
+			pushToStack(root);
 		}
 
 		@Override
 		public boolean hasNext() {
-			if (queue.isEmpty()) {
+			if (stack.isEmpty()) {
 				return false;
 			}
 			return true;
@@ -37,13 +24,22 @@ public class BinarySearchTree<K extends Comparable<K>, V> implements Iterable<K>
 
 		@Override
 		public K next() {
-			next = getNext();
+			next = stack.removeFirst();
+			if (next.rChild != null) {
+				pushToStack(next.rChild);
+			}
 			return next.key;
 		}
 
-		private Node<K, V> getNext() {
-			Node<K, V> tmp = queue.remove();
-			return tmp;
+		private void pushToStack(Node<K, V> root) {
+			Node<K, V> tmp = root;
+			while (true) {
+				stack.addFirst(tmp);
+				if (tmp.lChild == null) {
+					return;
+				}
+				tmp = tmp.lChild;
+			}
 		}
 
 		@Override
