@@ -1,9 +1,11 @@
 package com.gmail.mizuno.tamaki.binary_search_tree;
 
-import org.junit.BeforeClass;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+
+import java.util.Iterator;
+
 import org.junit.Test;
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
 
 public class BinarySearchTreeTest {
 
@@ -41,25 +43,51 @@ public class BinarySearchTreeTest {
 		tree.add(13, "13_2");
 		assertThat(tree.toString(), is("<<<2>3<4>>6<7<<9>13<13_2>>>>15<<17>18<20>>"));
 		tree.add(6, "6_2");
-		assertThat(tree.toString(), is("<<<2>3<4>>6<<6_2>7<<9>13<13>>>>15<<17>18<20>>"));
+		assertThat(tree.toString(), is("<<<2>3<4>>6<<6_2>7<<9>13<13_2>>>>15<<17>18<20>>"));
 	}
 	
 	@Test
 	public void searchTest() {
-		// TODO Auto-generated method stub
-
+		assertThat(tree.search(7), is("7"));
+		assertThat(tree.search(15), is("15"));
+		assertThat(tree.search(6), is("6"));
+	}
+	
+	
+	@Test
+	public void deleteTest() {
+		assertThat(tree.delete(6), is("6"));
+		assertThat(tree.toString(), is("<<<2>3>4<<6_2>7<<9>13<13_2>>>>15<<17>18<20>>"));
+		assertThat(tree.delete(3), is("3"));
+		assertThat(tree.toString(), is("<<2>4<<6_2>7<<9>13<13_2>>>>15<<17>18<20>>"));
+		assertThat(tree.delete(17), is("17"));
+		assertThat(tree.toString(), is("<<2>4<<6_2>7<<9>13<13_2>>>>15<18<20>>"));
 	}
 	
 	@Test
 	public void iteratorTest() {
-		// TODO Auto-generated method stub
+		Iterator<Integer> it = tree.iterator();
 
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(2));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(4));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(6));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(7));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(9));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(13));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(13));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(15));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(18));
+		assertThat(it.hasNext(), is(true));
+		assertThat(it.next(), is(20));
+		assertThat(it.hasNext(), is(false));
 	}
-	
-	@Test
-	public void deleteTest() {
-		// TODO Auto-generated method stub
-
-	}
-	
 }
